@@ -4,15 +4,21 @@ import socket
 from urllib.parse import urlparse
 import os
 
-# from openai import OpenAI
 import whisper
 import pyktok as pyk
+from openai import AzureOpenAI
 
 import numpy as np
 import pandas as pd
 
-whisperModel = whisper.load_model('base')
-tiktokURL = 'https://www.tiktok.com/@shezcooks/video/7424055700164316449?q=food&t=1748256368770'
+import base64
+# from config import gptModel, metadataFile, whisperModel, gptClient
+import config as cf
+
+# whisperModel = whisper.load_model('base')
+# exampleTiktokURL = 'https://www.tiktok.com/@shezcooks/video/7424055700164316449?q=food&t=1748256368770'
+exampleTiktokURL = 'https://www.tiktok.com/@sivanskitchen/video/7453908585282571550'
+# gptModel = 'gpt-4o'
 
 
 class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -38,25 +44,80 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
             print('ERROR: Server does not support POST to other endpoints than root!')
             return self.return_not_implemented()
         
-        # 1. Read body with url
+        # 1. Read body with url - VENT
+        tiktokURL = exampleTiktokURL
         # 2. Check validity of url? Maybe not. Hiv på en try except
-        # 3. Download video file (mp4) and get description
-        # 4. Send mp4 file to whisper and get text
+        
+        # 3. Download video file (mp4)
+        videoFile = pyk.save_tiktok(tiktokURL, True, cf.metadataFile, return_fns=True)['video_fn']
+        # 3a. Get transcription
+        transcription = cf.whisperModel.transcribe(videoFile, fp16=False)['text']
+        # 3b. Get description
+        description = pd.read_csv(cf.metadataFile).loc[0, 'video_description']
 
-        metadataFile = 'metadata.csv'
+        # 4. Prompt chatGPT for recipe
+        textGen = cf.gptClient.chat.completions.create(
+            model=cf.gptModel,
+            messages=[
+                {'role': 'system', 'content': cf.gptContext},
+                {'role': 'user', 'content': cf.configureInput(description=description, transcription=transcription)}
+            ]
+        )
+        print(textGen.choices[0].message.content)
+
+        # imageGen = cf.gptClient.responses.create(
+        #     model=cf.gptModel,
+        #     input='Crispy rice salad',
+        #     tools=[{'type': 'image_generation'}],
+        # )
+
+        # image_data = [
+        #     output.result
+        #     for output in imageGen.output
+        #     if output.type == 'image_generation_call'
+        # ]
+        # if image_data:
+        #     image_base64 = image_data[0]
+        #     with open("otter.png", "wb") as f:
+        #         f.write(base64.b64decode(image_base64))
+
+        # 5. Clean up downloaded files
+        os.remove(cf.metadataFile)
+        os.remove(videoFile)
+
+
 
         # Save video and metadata
-        savedFiles = pyk.save_tiktok(tiktokURL, True, metadataFile, return_fns=True)
+        # savedFiles = pyk.save_tiktok(tiktokURL, True, metadataFile, return_fns=True)
         # Get video file name
-        videoFile = savedFiles['video_fn'] 
+        # videoFile = savedFiles['video_fn'] 
         # Get description from metadata
-        df = pd.read_csv(metadataFile)
-        description = df.loc[0, 'video_description']
+        # df = pd.read_csv(metadataFile)
+        # description = df.loc[0, 'video_description']
         # Transcribe video file
-        transcription = whisperModel.transcribe(videoFile, fp16=False)
+        # transcription = whisperModel.transcribe(videoFile, fp16=False)
+        # transcription = transcription['text']
         # Transcribed video
-        print(transcription['text'])
+        # print(description)
+        # print(transcription)
 
+        # print('Setting up GPT client')
+        # client = AzureOpenAI(
+        #     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+        #     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        #     api_version="2025-01-01-preview"
+        # )
+
+        # print('Promting ChatGPT')
+        # response = client.chat.completions.create(
+        #     model=gptModel,
+        #     messages=[
+        #         {'role': 'system', 'content': 'Assistant is trained to create a recipe from the provided input text. The assistant takes two textual sources as input: DESCRIPTION and TRANSCRIPTION. The outputted recipe contains a list of the neccesary ingredients and a step-by-step instruction on how to cook the meal.'},
+        #         {'role': 'user', 'content': 'DESCRIPTION: ' + description + '\nTRANSCRIPTION: ' + transcription}
+        #     ]
+        # )
+
+        # print(response.choices[0].message.content)
         
 
             
@@ -69,8 +130,6 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    # Pyktok config
-    # pyk.specify_browser('chrome')
 
     host = 'localhost'
     port = 8080
