@@ -1,16 +1,14 @@
 .input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 16px;
-    background-color: gray;
-    border-top: 1px black;
-    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
   }
   
   .input-wrapper {
     max-width: 640px;
+    min-width: 640px;
     margin: 0 auto;
     display: flex;
     align-items: flex-end;

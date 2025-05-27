@@ -4,7 +4,6 @@ import './input.css';
 export type Message = {
   id: number;
   text: string;
-  sender: "user" | "reply"
 }
 
 interface ChatInputProps {
@@ -29,7 +28,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
       onSend({
         id: Date.now(),
         text: message.trim(),
-        sender: "user",
     });
       setMessage("");
     }
@@ -49,7 +47,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
           ref={textareaRef}
           className="input-textarea"
           rows={1}
-          placeholder="Send a message"
+          placeholder="Enter a url"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}

@@ -1,22 +1,48 @@
 'use client';
 import React, { useState } from "react";
 import ChatInput, { Message } from './components/Input';
-import MessageBubble from "./components/Bubble";
+import Sidebar from "./components/Sidebar";
 
 export default function Home() {
+
+    const barItems = [
+        { label: "test", onClick: () => console.log("test")}
+    ];
+
+
+
     const [messages, setMessages] = useState<Message[]>([]);
     const handleSend = (msg: Message) => {
         setMessages((prev) => [...prev, msg]);
-    }
+        console.log("text: %s", msg.text)
+        
+        //auto reply to test bot
+        // setTimeout(() => {
+        //     setMessages((prev) => [
+        //         ...prev,
+        //         {
+        //             id: Date.now() + 1,
+        //             text: "auto-reply from chat.",
+        //             sender: "reply",
+        //         },
+        //     ]);
+        // console.log("text: %s, sender %s", msg.text, msg.sender);}, 1000);
+    };
+
     return(
-        <div className="chatPage">
-            <div className="chatHistory">
-                {messages.map((msg, idx) => (
-                    <MessageBubble key={msg.id} text={msg.text} sender={msg.sender}/>
-                ))}
-            </div>
-            <div><ChatInput onSend={handleSend}/></div>
+        <div style={{ display: "flex" }}><Sidebar items={barItems}/>
+
+        <div><ChatInput onSend={handleSend}/></div>
+        
         </div>
+
+        // <div className="chatPage">
+        //     <div className="chatHistory">
+        //         {messages.map((msg, idx) => (
+        //             <MessageBubble key={msg.id} text={msg.text} sender={msg.sender}/>
+        //         ))}
+        //     </div>
+        // </div>
     )
 }
 
