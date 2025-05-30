@@ -17,6 +17,12 @@ gptContext = '''
     Assistant is trained to create a recipe from the provided input text. 
     The assistant takes two textual sources as input: DESCRIPTION and TRANSCRIPTION. 
     The outputted recipe contains a list of the neccesary ingredients and a step-by-step instruction on how to cook the meal.
+    The output must be formatted as a JSON object with the following structure:
+    {
+        "Title": ,
+        "Ingredients": ,
+        "Instructions":
+    }
 '''
 
 gptClient = AzureOpenAI(

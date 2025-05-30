@@ -35,17 +35,27 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_PUT(self):
         return self.return_not_implemented()
     
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        return
+
     def do_POST(self):
         # OBS! Må slette csv fil på slutten så ingen annen metadata lagres i samme fil
 
 
-        url = urlparse(self.path).path
-        if url != '/':
-            print('ERROR: Server does not support POST to other endpoints than root!')
-            return self.return_not_implemented()
+        # url = urlparse(self.path).path
+        # if url != '/':
+        #     print('ERROR: Server does not support POST to other endpoints than root!')
+        #     return self.return_not_implemented()
         
+        contentLength = int(self.headers['content-length'])
+        tiktokURL = self.rfile.read(contentLength).decode('utf-8')
+
         # 1. Read body with url - VENT
-        tiktokURL = exampleTiktokURL
+        # tiktokURL = exampleTiktokURL
         # 2. Check validity of url? Maybe not. Hiv på en try except
         
         # 3. Download video file (mp4)
@@ -65,22 +75,22 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         )
         print(textGen.choices[0].message.content)
 
-        imageGen = cf.gptClient.chat.completions.create(
-            model=cf.gptModel,
-            messages=[
-            {
-                "role": "system", 
-                "content": "You are an expert image creator. Generate high-quality images based on descriptions."
-            },
-            {
-                "role": "user", 
-                "content": "Create an image of a cripsy rice salad"
-            }
-            ],
-            max_tokens=1000
-        )
+        # imageGen = cf.gptClient.chat.completions.create(
+        #     model=cf.gptModel,
+        #     messages=[
+        #     {
+        #         "role": "system", 
+        #         "content": "You are an expert image creator. Generate high-quality images based on descriptions."
+        #     },
+        #     {
+        #         "role": "user", 
+        #         "content": "Create an image of a cripsy rice salad"
+        #     }
+        #     ],
+        #     max_tokens=1000
+        # )
 
-        print(imageGen.choices[0].message)
+        # print(imageGen.choices[0].message)
 
         # imageGen = cf.gptClient.responses.create(
         #     model=cf.gptModel,
@@ -141,7 +151,11 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         # print('Request to URL ' + url)
         self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Content-type', 'application/json')
         self.end_headers()
+
+        self.wfile.write(textGen.choices[0].message.content.encode()) # Kanskje
         return
 
 
