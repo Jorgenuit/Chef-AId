@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./components/Sidebar";
+import { createItemList } from "./components/CreateItemList";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -23,15 +24,14 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const itemList = createItemList("./app/components/recipe");
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>
-				<div style={{ display: "flex" }}>
-					<div>
-						<Sidebar />
-					</div>
-					{children}
+				<div className="sidebar-container">
+					<Sidebar items={itemList} />
 				</div>
+				<div className={"page-container"}>{children}</div>
 			</body>
 		</html>
 	);

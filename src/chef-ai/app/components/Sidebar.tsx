@@ -2,40 +2,41 @@
 import React from "react";
 import "./sidebar.css";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-interface SidebarProps {
-	items?: { label: string; icon?: React.ReactNode; onClick: () => void }[];
+export interface SidebarProps {
+	items?: { label: string; icon?: React.ReactNode }[];
 }
 
 const imageClick = () => {
-	//useRouter for navigation!!!
 	console.log("Going home!");
-	//router.push('homepage')!!!!
 };
 
-const createItemList = () => {};
-
 const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
+	const router = useRouter();
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
-				<Image
-					src="/images/house-icon-2.png"
-					priority
-					onClick={imageClick}
-					style={{ cursor: "pointer" }}
-					alt="logo"
-					width={50}
-					height={50}
-				/>{" "}
-				<span>Chef-AId </span>
+				<Link href={"/"}>
+					<Image
+						src="/images/house-icon-2.png"
+						priority
+						onClick={imageClick}
+						style={{ cursor: "pointer" }}
+						alt="logo"
+						width={50}
+						height={50}
+					/>{" "}
+					<span>Chef-AId </span>
+				</Link>
 			</div>
 			<nav className="sidebar-nav">
 				{items.map((item, idx) => (
 					<button
 						key={idx}
 						className="sidebar-item"
-						onClick={item.onClick}
+						onClick={() => router.push(item.label)}
 					>
 						{item.icon && (
 							<span className="sidebar-icon">{item.icon}</span>

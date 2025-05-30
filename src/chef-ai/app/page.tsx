@@ -1,11 +1,7 @@
 import React from "react";
-import ChatInput, { Message } from "./components/ChatInput";
+import ChatInput from "./components/ChatInput";
 
 export default function Home() {
-	// const barItems = [{ label: "test", onClick: () => console.log("test") }];
-
-	// const [messages, setMessages] = useState<Message[]>([]);
-
 	return (
 		<div>
 			<ChatInput />
