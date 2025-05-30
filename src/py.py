@@ -65,6 +65,23 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         )
         print(textGen.choices[0].message.content)
 
+        imageGen = cf.gptClient.chat.completions.create(
+            model=cf.gptModel,
+            messages=[
+            {
+                "role": "system", 
+                "content": "You are an expert image creator. Generate high-quality images based on descriptions."
+            },
+            {
+                "role": "user", 
+                "content": "Create an image of a cripsy rice salad"
+            }
+            ],
+            max_tokens=1000
+        )
+
+        print(imageGen.choices[0].message)
+
         # imageGen = cf.gptClient.responses.create(
         #     model=cf.gptModel,
         #     input='Crispy rice salad',

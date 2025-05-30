@@ -1,0 +1,7 @@
+[
+    {
+        "Id": "d213383a-08fb-4f66-9e26-1735347501e9",
+        "Name": "Test Recipe",
+        "Path":"./app/data/test_recipe.json"
+    }
+]
