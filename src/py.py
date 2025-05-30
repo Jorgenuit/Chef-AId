@@ -39,7 +39,8 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With, Content-type, Authorization")
+        self.end_headers()
         return
 
     def do_POST(self):
