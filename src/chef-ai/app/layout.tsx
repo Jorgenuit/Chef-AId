@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Sidebar from "./components/Sidebar";
+import Sidebar, { SidebarProps } from "./components/Sidebar";
 import { createItemList } from "./components/CreateItemList";
 
 const geistSans = Geist({
@@ -24,7 +24,15 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const itemList = createItemList("./app/components/recipe");
+	let itemList: SidebarProps["items"] = [];
+	try{
+		itemList = createItemList("./app/data/index.json");
+	}
+
+	catch(error){
+		console.error(error);
+	}
+
 	return (
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable}`}>

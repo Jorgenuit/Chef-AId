@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export interface SidebarProps {
-	items?: { label: string; icon?: React.ReactNode }[];
+	items?: { label: string; id: string; icon?: React.ReactNode }[];
 }
 
 const imageClick = () => {
@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 					<button
 						key={idx}
 						className="sidebar-item"
-						onClick={() => router.push(item.label)}
+						onClick={() => router.push(item.id)}
 					>
 						{item.icon && (
 							<span className="sidebar-icon">{item.icon}</span>

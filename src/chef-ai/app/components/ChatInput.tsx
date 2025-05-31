@@ -33,6 +33,14 @@ const ChatInput = () => {
 		}
 	};
 
+	useEffect(() => {
+  const textarea = textareaRef.current;
+  if (textarea) {
+    textarea.style.height = "auto"; // reset height
+    textarea.style.height = `${textarea.scrollHeight}px`; // set to content height
+  }
+}, [message]);
+
 	return (
 		<div className="input-container">
 			<div className="input-wrapper">

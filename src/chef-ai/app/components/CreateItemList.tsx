@@ -1,19 +1,21 @@
 import fs from "fs";
 import path from "path";
 import type { SidebarProps } from "./Sidebar";
+import type { IndexData } from "../interfaces";
+import { json } from "stream/consumers";
+import Sidebar from "./Sidebar";
 
 export function createItemList(filePath: string): SidebarProps["items"] {
 	const pathName = path.resolve(filePath);
 	const fileContent = fs.readFileSync(pathName, "utf-8");
 
-	const lines = fileContent
-		.split("\n")
-		.map((line) => line.trim())
-		.filter(Boolean);
+	const greie: IndexData[] = JSON.parse(fileContent)
 
-	const items = lines.map((label) => ({
-		label,
+	const items = greie.map(({ Name, Id }) => ({
+  		label: Name,
+  		id: Id,
 	}));
+
 	console.log(items);
 	return items;
 }

@@ -30,7 +30,7 @@ body {
 }
 .sidebar-container {
 	flex: 1;
-	width: 240px;
+	max-width: 20vw;
 	height: 100vh;
 	background-color: #2b2d30;
 	color: white;
