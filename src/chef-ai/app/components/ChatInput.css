@@ -1,9 +1,11 @@
-.input-container {
+.input-container {	
+	flex: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
 	min-height: 100vh;
+
 }
 
 .input-wrapper {
@@ -23,7 +25,6 @@
 .input-textarea {
 	flex: 1;
 	resize: none;
-	overflow: hidden;
 	border: none;
 	background: transparent;
 	font-size: 16px;
@@ -35,7 +36,6 @@
 	margin-left: 12px;
 	padding: 8px 16px;
 	background-color: black;
-	color: white;
 	font-size: 14px;
 	border: none;
 	border-radius: 8px;
