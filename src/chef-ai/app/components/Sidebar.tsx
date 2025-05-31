@@ -9,9 +9,9 @@ export interface SidebarProps {
 	items?: { label: string; id: string; icon?: React.ReactNode }[];
 }
 
-const imageClick = () => {
-	console.log("Going home!");
-};
+// const imageClick = () => {
+// 	console.log("Going home!");
+// };
 
 const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 	const router = useRouter();
@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 					<Image
 						src="/images/house-icon-2.png"
 						priority
-						onClick={imageClick}
+						// onClick={imageClick}
 						style={{ cursor: "pointer" }}
 						alt="logo"
 						width={50}

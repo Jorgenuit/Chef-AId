@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import "./ChatInput.css";
+import { useRouter } from "next/navigation";
+
 interface ChatInputProps {}
 
 const ChatInput = () => {
@@ -8,7 +10,11 @@ const ChatInput = () => {
 
 	const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 	const [message, setMessage] = useState("");
+	const [isLocked, setIsLocked] = useState(false);
+	const router = useRouter();
     
+	// const handleLock = () => {{setIsLocked(!isLocked)}}
+
 	const handleSend = async () => {
 		if (message.trim() !== "") {
 			//   onSend({
@@ -16,8 +22,10 @@ const ChatInput = () => {
 			//     text: message.trim(),
 			//   });
 			console.log(message);
-			textareaRef.current!.value = "";
+			
 
+			setIsLocked(true);
+			try{
 			const response = await fetch(backend, {
 				method: 'POST',
 				body: message,
@@ -30,7 +38,14 @@ const ChatInput = () => {
 			let body = await response.json();
 			console.log(body);
 			setMessage("");
-		}
+			}
+			
+			finally{
+				textareaRef.current!.value = "";
+				setIsLocked(false)
+				router.refresh();
+			}
+	}
 	};
 
 	useEffect(() => {
@@ -41,6 +56,7 @@ const ChatInput = () => {
   }
 }, [message]);
 
+
 	return (
 		<div className="input-container">
 			<div className="input-wrapper">
@@ -49,6 +65,7 @@ const ChatInput = () => {
 					className="input-textarea"
 					rows={1}
 					placeholder="Enter a url"
+					disabled={isLocked}
 					onChange={(e) => setMessage(e.target.value)}
 					onKeyDown={(e) => {
 						if (e.key === "Enter") {
@@ -57,8 +74,8 @@ const ChatInput = () => {
 						}
 					}}
 				/>
-				<button className="input-send-button" onClick={handleSend}>
-					Send
+				<button className="input-send-button" onClick={handleSend} disabled={isLocked}>
+					{isLocked ? "Sending..." : "Send"}
 				</button>
 			</div>
 		</div>
