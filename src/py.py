@@ -3,6 +3,8 @@ import socketserver
 import socket
 from urllib.parse import urlparse
 import os
+import json
+import uuid
 
 import whisper
 import pyktok as pyk
@@ -47,10 +49,10 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         # OBS! Må slette csv fil på slutten så ingen annen metadata lagres i samme fil
 
 
-        # url = urlparse(self.path).path
-        # if url != '/':
-        #     print('ERROR: Server does not support POST to other endpoints than root!')
-        #     return self.return_not_implemented()
+        url = urlparse(self.path).path
+        if url != '/':
+            print('ERROR: Server does not support POST to other endpoints than root!')
+            return self.return_not_implemented()
         
         contentLength = int(self.headers['content-length'])
         tiktokURL = self.rfile.read(contentLength).decode('utf-8')
@@ -74,7 +76,43 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
                 {'role': 'user', 'content': cf.configureInput(description=description, transcription=transcription)}
             ]
         )
-        print(textGen.choices[0].message.content)
+        recipeJsonString = textGen.choices[0].message.content
+        print(recipeJsonString)
+
+        # Save file to file system
+        recipe = json.loads(recipeJsonString)
+        newFile = recipe['Title'].lower().replace(' ', '_') + '.json'
+        newRecipe = {
+            "Id": str(uuid.uuid4()),
+            "Name": recipe['Title'],
+            "Path": cf.recipeFilePath + newFile
+        }
+
+        # Read index file
+        with open(cf.dataStore + 'index.json', 'r') as f:
+            data = json.load(f)
+            print(data)
+            data.append(newRecipe)
+            print(data)
+        # Update index file
+        with open(cf.dataStore + 'index.json', 'w') as f:
+            json.dump(data, f, indent=6)
+        # Create new file for recipe
+        with open(cf.dataStore + newFile, 'w') as f:
+            json.dump(recipe, f, indent=6)
+
+        # 5. Clean up downloaded files
+        os.remove(cf.metadataFile)
+        os.remove(videoFile)
+
+
+        self.send_response(200)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+        self.wfile.write(textGen.choices[0].message.content.encode()) # Kanskje
+        return
 
         # imageGen = cf.gptClient.chat.completions.create(
         #     model=cf.gptModel,
@@ -108,12 +146,6 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         #     image_base64 = image_data[0]
         #     with open("otter.png", "wb") as f:
         #         f.write(base64.b64decode(image_base64))
-
-        # 5. Clean up downloaded files
-        os.remove(cf.metadataFile)
-        os.remove(videoFile)
-
-
 
         # Save video and metadata
         # savedFiles = pyk.save_tiktok(tiktokURL, True, metadataFile, return_fns=True)
@@ -151,13 +183,7 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
             
 
         # print('Request to URL ' + url)
-        self.send_response(200)
-        self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-        self.wfile.write(textGen.choices[0].message.content.encode()) # Kanskje
-        return
+        
 
 
 

@@ -7,6 +7,8 @@ from openai import AzureOpenAI
 
 # GENERAL
 metadataFile = 'metadata.py'
+dataStore = 'chef-ai/app/data/'
+recipeFilePath = './app/data/'
 
 # WHISPER
 whisperModel = whisper.load_model('base')
