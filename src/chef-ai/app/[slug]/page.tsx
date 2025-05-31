@@ -1,17 +1,17 @@
 import fs from "fs"
 import { notFound } from "next/navigation"
+import type { IndexData, RecipeData } from "../interfaces";
+// interface IndexData {
+//   "Id": string,
+//   "Name": string,
+//   "Path": string
+// }
 
-interface IndexData {
-  "Id": string,
-  "Name": string,
-  "Path": string
-}
-
-interface RecipeData {
-  "Name": string,
-  "Ingredients": string,
-  "Instructions": string
-}
+// interface RecipeData {
+//   "Name": string,
+//   "Ingredients": string,
+//   "Instructions": string
+// }
 
 export default async function Page({params,}: {params: Promise<{ slug: string }>;}) {
   const { slug } = await params;
