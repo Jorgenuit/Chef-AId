@@ -54,9 +54,9 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         
         contentLength = int(self.headers['content-length'])
         tiktokURL = self.rfile.read(contentLength).decode('utf-8')
+        # tiktokURL = exampleTiktokURL  # DEBUG
 
         # 1. Read body with url - VENT
-        # tiktokURL = exampleTiktokURL
         # 2. Check validity of url? Maybe not. Hiv på en try except
         
         # 3. Download video file (mp4)
