@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import os
 import json
 import uuid
+import cv2
 
 import whisper
 import pyktok as pyk
@@ -48,7 +49,6 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         # OBS! Må slette csv fil på slutten så ingen annen metadata lagres i samme fil
 
-
         url = urlparse(self.path).path
         if url != '/':
             print('ERROR: Server does not support POST to other endpoints than root!')
@@ -79,14 +79,28 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         recipeJsonString = textGen.choices[0].message.content
         print(recipeJsonString)
 
+
+
+
         # Save file to file system
         recipe = json.loads(recipeJsonString)
-        newFile = recipe['Title'].lower().replace(' ', '_') + '.json'
+        newDir = recipe['Title'].lower().replace(' ', '_') + '/'
+        os.makedirs(cf.dataStore + newDir, exist_ok=True)
+
         newRecipe = {
             "Id": str(uuid.uuid4()),
             "Name": recipe['Title'],
-            "Path": cf.recipeFilePath + newFile
+            "Path": cf.recipeFilePath + newDir
         }
+
+        # Get first image from mp4 file
+        # https://www.geeksforgeeks.org/extract-images-from-video-in-python/
+        cam = cv2.VideoCapture(videoFile)
+        ret,frame = cam.read()
+        if ret:
+            cv2.imwrite(cf.dataStore + newDir + 'image.jpg', frame)
+        cam.release()
+        cv2.destroyAllWindows()
 
         # Read index file
         with open(cf.dataStore + 'index.json', 'r') as f:
@@ -98,7 +112,7 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         with open(cf.dataStore + 'index.json', 'w') as f:
             json.dump(data, f, indent=6)
         # Create new file for recipe
-        with open(cf.dataStore + newFile, 'w') as f:
+        with open(cf.dataStore + newDir + 'recipe.json', 'w') as f:
             json.dump(recipe, f, indent=6)
 
         # 5. Clean up downloaded files

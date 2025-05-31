@@ -2,9 +2,7 @@ import React from "react";
 import ChatInput from "./components/ChatInput";
 
 export default function Home() {
-	return (
-		<ChatInput />
-	);
+	return <ChatInput />;
 }
 // <div className="chatPage">
 //     <div className="chatHistory">

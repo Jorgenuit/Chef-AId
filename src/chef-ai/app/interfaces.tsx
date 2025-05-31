@@ -7,7 +7,7 @@ export interface IndexData {
 }
 
 export interface RecipeData {
-  "Name": string,
-  "Ingredients": string,
-  "Instructions": string
+  "Title": string,
+  "Ingredients": object,
+  "Instructions": string[]
 }

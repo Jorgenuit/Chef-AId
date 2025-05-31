@@ -1,7 +1,7 @@
 [
-    {
-        "Id": "d213383a-08fb-4f66-9e26-1735347501e9",
-        "Name": "Test Recipe",
-        "Path":"./app/data/test_recipe.json"
-    }
+      {
+            "Id": "80bae2f1-96e9-491e-8a42-cf717de66475",
+            "Name": "Crispy Rice Salad",
+            "Path": "./app/data/crispy_rice_salad/"
+      }
 ]

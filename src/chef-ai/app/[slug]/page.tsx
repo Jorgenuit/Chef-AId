@@ -1,17 +1,7 @@
 import fs from "fs"
 import { notFound } from "next/navigation"
 import type { IndexData, RecipeData } from "../interfaces";
-// interface IndexData {
-//   "Id": string,
-//   "Name": string,
-//   "Path": string
-// }
-
-// interface RecipeData {
-//   "Name": string,
-//   "Ingredients": string,
-//   "Instructions": string
-// }
+import styles from './page.module.css'
 
 export default async function Page({params,}: {params: Promise<{ slug: string }>;}) {
   const { slug } = await params;
@@ -37,12 +27,30 @@ export default async function Page({params,}: {params: Promise<{ slug: string }>
 
 
   // Get recipe
-  jsonstring = fs.readFileSync(object.Path, 'utf-8');
+  jsonstring = fs.readFileSync(object.Path + 'recipe.json', 'utf-8');
   const recipe:RecipeData = JSON.parse(jsonstring) // Parse to object
 
 
-  // Generate UUID: crypto.randomUUID()
-
-  // return <div>My Post: {slug}</div>;
-  return <div>My Post: {recipe.Instructions}</div>;
+  return (
+    <div>
+      <h1> {recipe.Title} </h1>
+      <div className="recipe-container">
+          <h2>Ingredients:</h2>
+          {Object.entries(recipe.Ingredients).map(([key,value]) => (
+            <>
+              <h3>{key}</h3>
+              <ul>
+                {value.map((line:string) => <li>{line}</li> )}
+              </ul>
+            </>
+          ))}
+      </div>
+      <div>
+        <h2>Instructions</h2>
+        <ul>
+          {recipe.Instructions.map(line => <li>{line}</li>)}
+        </ul>
+      </div>
+    </div>
+  )
 }
