@@ -23,8 +23,9 @@ const ChatInput = () => {
 			console.log(message);
 
 
-			setLocked(true); //lock input and send button so user can see that its working, and not spam requests
+			setLocked(true); //lock input and send button so user cant spam requests, but can see that its working 
 			try {
+				//request to backend to generate the recipe
 				const response = await fetch(backend, {
 					method: 'POST',
 					body: message,
@@ -40,13 +41,14 @@ const ChatInput = () => {
 			}
 
 			finally {
-				textareaRef.current!.value = "";
-				setLocked(false)
-				router.refresh();
+				textareaRef.current!.value = ""; //reset the text area
+				setLocked(false) // unlock the input
+				router.refresh(); // refresh the page to reload the sidebar with the new recipe
 			}
 		}
 	};
 
+	//Effect that resizes the text area to fit the text
 	useEffect(() => {
 		const textarea = textareaRef.current;
 		if (textarea) {

@@ -5,16 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+//items for the sidebar
 export interface SidebarProps {
-	items?: { label: string; id: string; icon?: React.ReactNode }[];
+	items?: { label: string; id: string; }[];
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
-	const router = useRouter();
+	const router = useRouter(); //router used to redirect to recipes
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
-				<Link href={"/"}>
+				<Link href={"/"}> 
 					<Image
 						src="/images/house-icon-2.png"
 						priority
@@ -33,9 +34,6 @@ const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 						className="sidebar-item"
 						onClick={() => router.push(item.id)}
 					>
-						{item.icon && (
-							<span className="sidebar-icon">{item.icon}</span>
-						)}
 						{item.label}
 					</button>
 				))}

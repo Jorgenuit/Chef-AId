@@ -5,30 +5,25 @@
 	align-items: center;
 	text-align: center;
 	min-height: 100vh;
-
 }
 
 .input-wrapper {
 	max-width: 75vw;
 	min-width: 640px;
 	margin: 0 auto;
-	display: flex;
-	align-items: flex-end;
-	padding: 12px;
-	border: 1px solid black;
-	border-radius: 16px;
-	background-color: black;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-	transition: box-shadow 0.2s ease;
+	display: flex; /*keeps everything separated*/
+	padding: 12px; /*gives more are*/
+	border-radius: 16px; /*gives rounder bubble look*/
+	background-color: black; /*darker background to stick out from the dark background*/
 }
 
 .input-textarea {
 	flex: 1;
-	resize: none;
-	border: none;
-	background: transparent;
+	resize: none; /*user should not be able to resize*/
+	border: none; /*border is unneccesary with the wrapper*/
+	background: transparent; /*unneccesary*/
 	font-size: 16px;
-	outline: none;
+	outline: none; /*unneccesary*/
 	line-height: 2;
 }
 
@@ -38,14 +33,14 @@
 	background-color: black;
 	font-size: 14px;
 	border: none;
-	border-radius: 8px;
+	border-radius: 8px; /*rounder look for the button*/
 	cursor: pointer;
-	transition: background 0.2s ease;
+	transition: background 0.2s ease; /*transition to and from hover, looks nice*/
 }
 
 .input-send-button:disabled {
 	opacity: 0.4;
-	cursor: default;
+	cursor: default; /*make clear that button cant be clicked*/ 
 }
 
 .input-send-button:not(:disabled):hover {
