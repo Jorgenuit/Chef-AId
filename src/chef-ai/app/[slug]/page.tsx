@@ -4,14 +4,14 @@ import type { IndexData, RecipeData } from "../interfaces";
 import Image from 'next/image'
 import './stylesheet.css' 
 
-export default async function Page({params,}: {params: Promise<{ slug: string }>;}) {
+export default async function Page({ params, }: { params: Promise<{ slug: string }>; }) {
   const { slug } = await params;
 
   const indexFile: string = "./app/data/index.json";
 
 
   let jsonstring = fs.readFileSync(indexFile, 'utf-8'); // Read index file
-  const data:IndexData[] = JSON.parse(jsonstring); // Parse to object
+  const data: IndexData[] = JSON.parse(jsonstring); // Parse to object
 
 
   // Validate path and get object
@@ -74,6 +74,13 @@ export default async function Page({params,}: {params: Promise<{ slug: string }>
               
         </div>
       </div>
+
+      <div className="video">
+        <video controls >
+          <source src={"/videos/" + object.Name + "mp4"} type="video/mp4" />
+        </video>
+      </div>
+
     </div>
   )
 }

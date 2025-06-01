@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
 	let itemList: SidebarProps["items"] = [];
 	try {
-		itemList = createItemList("./app/data/index.json");
+		itemList = createItemList("./app/data/index.json"); //read index file and create listitems 
 	}
 
 	catch (error) {
