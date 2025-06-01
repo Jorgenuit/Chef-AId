@@ -2,18 +2,21 @@ import http.server
 import socketserver
 import socket
 from urllib.parse import urlparse
-import os
-import json
 import uuid
 import shutil
 import random
 
+from openai import AzureOpenAI
+import os
+import requests
+from PIL import Image
+import json
+
 import cv2
-import aspose.words as aw
+# import aspose.words as aw
 
 import whisper
 import pyktok as pyk
-from openai import AzureOpenAI
 
 import numpy as np
 import pandas as pd
@@ -74,7 +77,7 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         # 4. Prompt chatGPT for recipe
         textGen = cf.gptClient.chat.completions.create(
-            model=cf.gptModel,
+            model=cf.gptTextModel,
             messages=[
                 {'role': 'system', 'content': cf.gptContext},
                 {'role': 'user', 'content': cf.configureInput(description=description, transcription=transcription)}
@@ -110,7 +113,28 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
             json.dump(recipe, f, indent=6)
 
         # Create recipe image
-        shutil.copy(cf.imageStore + 'images/generated_' + f'{random.randint(0, 5)}' + '.png', cf.imageStore + newFile + '.png')
+        imageGen = cf.gptClient.images.generate(
+            model=cf.gptImageModel,
+            prompt=f'''
+                Using the following subsections which contains information about a recipe, grenerate an image representative of the finished meal.
+                Title: 
+                {str(recipe['Title'])}
+
+                Ingredients:
+                {str(recipe['Ingredients'])}
+
+                Instructions:
+                {str(recipe['Instructions'])}
+            ''',
+            n=1
+        )
+        json_response = json.loads(imageGen.model_dump_json())
+        image_url = json_response['data'][0]['url']
+        generated_image = requests.get(image_url).content 
+        with open(cf.imageStore + newFile + '.png', "wb") as image_file:
+            image_file.write(generated_image)
+
+        # shutil.copy(cf.imageStore + 'images/generated_' + f'{random.randint(0, 5)}' + '.png', cf.imageStore + newFile + '.png')
 
         # Create recipe video
         os.rename(videoFile, cf.imageStore + newFile + '.mp4')

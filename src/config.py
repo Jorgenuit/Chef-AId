@@ -15,16 +15,31 @@ recipeFilePath = './app/data/'
 whisperModel = whisper.load_model('base')
 
 # CHATGPT
-gptModel = 'gpt-4o'
+gptTextModel = 'gpt-4o'
+# gptImageModel = 'dalle3'
+gptImageModel = 'dall-e-3'
+
 gptContext = '''
     Assistant is trained to create a recipe from the provided input text. 
     The assistant takes two textual sources as input: DESCRIPTION and TRANSCRIPTION. 
     The outputted recipe contains a list of the neccesary ingredients and a step-by-step instruction on how to cook the meal.
+    If there are no specified amount for an ingredient, estimate the amouth needed for the recipe.
+    Provide the measurements of ingredients in both American and European standard units.
+    Using the provided information, estimate the calories in the specified meal per serving. The data should be formatted similarly this example: "Calories": 650 calories per serving.
+    Estimate how many servings the recipe provides, and how much time is needed to make the meal.
+    Using the information provided and your knowledge about cooking, provide a list of four tips related to the recipe.
+    The assistant suggests the names of three different recipes that the user can try if they enjoy this recipe.
+
     The output must have the following structure with no extra text or special characters before or after the curly brackets:
     {
         "Title": ,
         "Ingredients": ,
-        "Instructions":
+        "Instructions": ,
+        "Calories": ,
+        "Servings": ,
+        "Time": ,
+        "Tips": ,
+        "Suggestions": ,
     }
 
     The ingredients must be divided into what part of the meal they belong to. Each part of the meal should contain a list of ingredients spesific to itself. For example:
@@ -48,6 +63,7 @@ gptContext = '''
     The instructions must be a list of strings.
     
 '''
+
 
 gptClient = AzureOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
