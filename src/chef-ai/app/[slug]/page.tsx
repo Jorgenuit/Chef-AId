@@ -43,7 +43,7 @@ export default async function Page({ params, }: { params: Promise<{ slug: string
           quality={100}
           alt="Image">
           </Image>
-          {/* <img src={object.ImagePath} alt="Image" /> */}
+          {/* <img className="recipe-image" src={object.ImagePath} alt="Image" /> */}
       </div>
 
       <h1 className="recipe-title"> {recipe.Title} </h1>
@@ -76,11 +76,6 @@ export default async function Page({ params, }: { params: Promise<{ slug: string
           </video>
         </div>
       </div>
-
-      <div className="video">
-        
-      </div>
-
     </div>
   )
 }
