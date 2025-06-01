@@ -1,10 +1,11 @@
 .input-container {
-	flex: 1;
+	flex: none;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-	min-height: 100vh;
+	/* min-height: 100vh; */
 }
 
 .input-wrapper {
@@ -12,13 +13,14 @@
 	min-width: 640px;
 	margin: 0 auto;
 	display: flex; /*keeps everything separated*/
-	padding: 12px; /*gives more are*/
+	padding: 12px; /*gives more air*/
 	border-radius: 16px; /*gives rounder bubble look*/
 	background-color: black; /*darker background to stick out from the dark background*/
 }
 
 .input-textarea {
 	flex: 1;
+	width: 50vw;
 	resize: none; /*user should not be able to resize*/
 	border: none; /*border is unneccesary with the wrapper*/
 	background: transparent; /*unneccesary*/

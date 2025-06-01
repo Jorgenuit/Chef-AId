@@ -17,14 +17,14 @@ const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 			<div className="sidebar-header">
 				<Link href={"/"}>
 					<Image
-						src="/images/house-icon-3.png"
+						src="/images/mascot-icon.png"
 						priority
 						style={{ cursor: "pointer" }}
 						alt="logo"
-						width={25}
-						height={25}
+						width={75}
+						height={75}
 					/>{" "}
-					<span>Chef-AId </span>
+					<span>Chef AId </span>
 				</Link>
 			</div>
 			<nav className="sidebar-nav">
