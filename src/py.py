@@ -110,7 +110,7 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
             json.dump(recipe, f, indent=6)
 
         # Create recipe image
-        shutil.copy(cf.imageStore + 'images/generated_' + f'{random.randint(0, 4)}' + '.png', cf.imageStore + newFile + '.png')
+        shutil.copy(cf.imageStore + 'images/generated_' + f'{random.randint(0, 5)}' + '.png', cf.imageStore + newFile + '.png')
 
         # Create recipe video
         os.rename(videoFile, cf.imageStore + newFile + '.mp4')
