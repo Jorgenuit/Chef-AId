@@ -1,8 +1,24 @@
 import React from "react";
 import ChatInput from "./components/ChatInput";
+import Image from "next/image";
 
 export default function Home() {
-	return <ChatInput />;
+	return (
+		<>
+			<div className="logo">
+				<Image
+					src="/images/logo.png"
+					priority
+					alt="logo"
+					style={{ borderRadius: 200 }}
+					width={512}
+					height={512}>
+				</Image>
+				<ChatInput />
+			</div>
+		</>
+
+	)
 }
 // <div className="chatPage">
 //     <div className="chatHistory">
