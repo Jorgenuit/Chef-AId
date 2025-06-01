@@ -3,6 +3,9 @@ import { notFound } from "next/navigation"
 import type { IndexData, RecipeData } from "../interfaces";
 import Image from 'next/image'
 import './stylesheet.css' 
+// import { BsExclamationCircle } from "react-icons/bs";
+import { FaRegSmileWink } from "react-icons/fa";
+
 
 export default async function Page({ params, }: { params: Promise<{ slug: string }>; }) {
   const { slug } = await params;
@@ -36,14 +39,12 @@ export default async function Page({ params, }: { params: Promise<{ slug: string
     <div className="recipe-container">
       <div className="image-wrapper">
         <Image
-          // src='/test.svg'
           src={object.ImagePath}
           fill={true}
           objectFit="cover"
           quality={100}
           alt="Image">
           </Image>
-          {/* <img className="recipe-image" src={object.ImagePath} alt="Image" /> */}
       </div>
 
       <h1 className="recipe-title"> {recipe.Title} </h1>
@@ -51,27 +52,56 @@ export default async function Page({ params, }: { params: Promise<{ slug: string
       <div className="recipe-wrapper">
 
         <div className="left">
+          <div className="info-wrapper">
+            <p className="info"><b>Calories:</b> {recipe.Calories}</p>
+            <p className="info"><b>Number of servings:</b> {recipe.Servings}</p>
+            <p className="info"><b>Prep time:</b> {recipe.Time}</p>
+          </div>
           <div className="ingredients-container">
               <h2>Ingredients:</h2>
               {Object.entries(recipe.Ingredients).map(([key,value]) => (
                 <div key={key}>
                   <h3>{key}</h3>
-                  <ul>
+                  <ul className="list">
                     {value.map((line:string, index:number) => <li key={index}>{line}</li> )}
                   </ul>
                 </div>
               ))}
           </div>
-          <div>
+          <div className="ingredients-container">
             <h2>Instructions</h2>
-            <ul>
+            <ul className="list">
               {recipe.Instructions.map((line, index) => <li key={index}>{line}</li>)}
             </ul>
           </div>
+          <div className="tip-container">
+            {/* <BsExclamationCircle size={50}/> */}
+            <FaRegSmileWink size={50}/>
+            <div className="big-tip-div">
+              <div className="tip-div">
+                <h4>Some useful tips!</h4>
+                <ul className="tip-list">
+                  {recipe.Tips.map((line, index) => <li key={index}> {line} </li> )}
+                </ul>
+                <br />
+                {/* <h4>How about trying one of these next!</h4>
+                <ul className="tip-list">
+                  {recipe.Suggestions.map((line, index) => <li key={index}> {line} </li> )}
+                </ul> */}
+              </div>
+              <div className="other-tip-div">
+                <h4>How about trying one of these next!</h4>
+                <ul className="tip-list">
+                  {recipe.Suggestions.map((line, index) => <li key={index}> {line} </li> )}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
+
         <div className="right">
-          <video controls >
+          <video className="video" controls >
             <source src={object.VideoPath} type="video/mp4" />
           </video>
         </div>

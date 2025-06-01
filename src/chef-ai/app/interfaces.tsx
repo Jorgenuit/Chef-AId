@@ -11,5 +11,10 @@ export interface IndexData {
 export interface RecipeData {
   "Title": string,
   "Ingredients": object,
-  "Instructions": string[]
+  "Instructions": string[],
+  "Calories": string,
+  "Servings": string,
+  "Time": string,
+  "Tips": string[],
+  "Suggestions": string[]
 }

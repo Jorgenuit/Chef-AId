@@ -4,7 +4,7 @@
     justify-content: flex-start;
     flex:5;
 
-    height: 100vh;
+    height: 100%;
     
     padding-inline: 2%;
     padding-block: 2%;
@@ -16,7 +16,7 @@
 .recipe-title {
     /* flex:1; */
     text-align: center;
-    margin-block: 15px;
+    margin-block: 20px;
     padding: 10px;
 
     font-size: xxx-large;
@@ -26,32 +26,129 @@
 
 
 .image-wrapper {
-    flex: 1;
+    flex: 2;
     display: flex;
     position: relative;
     background: #48b3a1;
     
     overflow: hidden;
     border-radius: 6px;
+    min-height: 20%;
     
     /* margin: 1%; */
 }
 
 .recipe-wrapper { /* Inneholder left og right */
-    flex: 4;
+    flex: 8;
     display: flex;
     flex-direction: row;
+    background-color:rgba(255, 255, 255, 0.096);
+    border-radius: 6px;
+
+
 }
     
-    .left {
-        flex: 2;
-        /* background-color:chartreuse */
-    }
+.left {
+    flex: 2;
+    /* background-color:rgba(255, 255, 255, 0.096); */
+    padding: 30px;
+    /* margin: 1%; */
+    /* border-radius: 6px; */
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    /* align-content: space-between; */
+
+}
+
+.info-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-block: 1%;
+    /* background-color:rgba(255, 255, 255, 0.096); */
+    /* padding: 1%; */
+}
+
+.info {
+    flex: 1;
+    text-align: center;
+    border-inline: 1px solid white;
+}
     
-    .right {
-        flex: 1;
-        background-color: azure;
-    }
-    .ingredients-container {
-        
-    }
+.right {
+    flex: 1;
+    display: flex;
+    /* background-color: azure; */
+    margin: 1%;
+    /* border-radius: 6px; */
+    /* overflow: hidden; */
+    justify-content: center;
+    align-items: center;
+    /* text-align: center; */
+
+
+}
+.ingredients-container {
+    padding: 1%;
+}
+
+.video {
+    border-radius: 6px;
+    /* height: 100%; */
+    /* width: 100%; */
+}
+
+b {
+    font-weight:bolder;
+}
+
+.list {
+    list-style-position: inside;
+    list-style-type: circle;
+    /* margin: 10px; */
+    /* padding: 10px; */
+}
+
+.tip-container {
+    display: flex;
+    flex-direction: row;
+    margin-block: 2%;
+    padding: 1%;
+    background-color:rgba(255, 255, 255, 0.096);
+    align-items: center;
+    border-radius: 10px;
+
+}
+
+.tip-div {
+    flex: 3;
+    margin-inline-start: 3%;
+}
+
+.other-tip-div {
+    flex: 2;
+}
+
+.tip-list {
+    flex: 1;
+    list-style-position: inside;
+    list-style-type: circle;
+    /* padding-inline: 1%; */
+}
+
+.big-tip-div {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+
+}
+
+/* h2 {
+    padding-bottom: 3px;
+} */
+
+h3 {
+    padding-block: 5px;
+}
