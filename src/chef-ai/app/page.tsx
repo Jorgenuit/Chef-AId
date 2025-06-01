@@ -10,7 +10,7 @@ export default function Home() {
 					src="/images/logo.png"
 					priority
 					alt="logo"
-					style={{ borderRadius: 200 }}
+					style={{ borderRadius: 250 }}
 					width={512}
 					height={512}>
 				</Image>
