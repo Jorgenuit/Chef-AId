@@ -8,6 +8,7 @@ from openai import AzureOpenAI
 # GENERAL
 metadataFile = 'metadata.py'
 dataStore = 'chef-ai/app/data/'
+imageStore = 'chef-ai/public/'
 recipeFilePath = './app/data/'
 
 # WHISPER

@@ -1,7 +1,8 @@
 import fs from "fs"
 import { notFound } from "next/navigation"
 import type { IndexData, RecipeData } from "../interfaces";
-import styles from './page.module.css'
+import Image from 'next/image'
+import './stylesheet.css' 
 
 export default async function Page({params,}: {params: Promise<{ slug: string }>;}) {
   const { slug } = await params;
@@ -27,29 +28,51 @@ export default async function Page({params,}: {params: Promise<{ slug: string }>
 
 
   // Get recipe
-  jsonstring = fs.readFileSync(object.Path + 'recipe.json', 'utf-8');
+  jsonstring = fs.readFileSync(object.FilePath, 'utf-8');
   const recipe:RecipeData = JSON.parse(jsonstring) // Parse to object
 
 
   return (
-    <div>
-      <h1> {recipe.Title} </h1>
-      <div className="recipe-container">
-          <h2>Ingredients:</h2>
-          {Object.entries(recipe.Ingredients).map(([key,value]) => (
-            <>
-              <h3>{key}</h3>
-              <ul>
-                {value.map((line:string) => <li>{line}</li> )}
-              </ul>
-            </>
-          ))}
+    <div className="recipe-container">
+      <div className="image-wrapper">
+        {/* <Image
+          src='/test.svg'
+          // src={object.ImagePath}
+          fill={true}
+          objectFit="cover"
+          quality={100}
+          alt="Image">
+          </Image> */}
+          {/* <img src={object.ImagePath} alt="Image" /> */}
       </div>
-      <div>
-        <h2>Instructions</h2>
-        <ul>
-          {recipe.Instructions.map(line => <li>{line}</li>)}
-        </ul>
+
+      <h1 className="recipe-title"> {recipe.Title} </h1>
+
+      <div className="recipe-wrapper">
+
+        <div className="left">
+          <div className="ingredients-container">
+              <h2>Ingredients:</h2>
+              {Object.entries(recipe.Ingredients).map(([key,value]) => (
+                <div key={key}>
+                  <h3>{key}</h3>
+                  <ul>
+                    {value.map((line:string, index:number) => <li key={index}>{line}</li> )}
+                  </ul>
+                </div>
+              ))}
+          </div>
+          <div>
+            <h2>Instructions</h2>
+            <ul>
+              {recipe.Instructions.map((line, index) => <li key={index}>{line}</li>)}
+            </ul>
+          </div>
+        </div>
+
+        <div className="right">
+              
+        </div>
       </div>
     </div>
   )

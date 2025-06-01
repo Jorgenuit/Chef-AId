@@ -6,6 +6,7 @@ import os
 import json
 import uuid
 import cv2
+import aspose.words as aw
 
 import whisper
 import pyktok as pyk
@@ -84,13 +85,15 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         # Save file to file system
         recipe = json.loads(recipeJsonString)
-        newDir = recipe['Title'].lower().replace(' ', '_') + '/'
-        os.makedirs(cf.dataStore + newDir, exist_ok=True)
+        newFile = recipe['Title'].lower().replace(' ', '_')
+        # newDir = recipe['Title'].lower().replace(' ', '_') + '/'
+        # os.makedirs(cf.dataStore + newDir, exist_ok=True)
 
         newRecipe = {
             "Id": str(uuid.uuid4()),
             "Name": recipe['Title'],
-            "Path": cf.recipeFilePath + newDir
+            "FilePath": cf.recipeFilePath + newFile + '.json',
+            "ImagePath": '/' + newFile + '.jpg',
         }
 
         # Get first image from mp4 file
@@ -98,9 +101,18 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         cam = cv2.VideoCapture(videoFile)
         ret,frame = cam.read()
         if ret:
-            cv2.imwrite(cf.dataStore + newDir + 'image.jpg', frame)
+            # cv2.imwrite(cf.dataStore + newDir + 'image.jpg', frame)
+            cv2.imwrite(cf.imageStore + newFile + '.jpg', frame)
         cam.release()
         cv2.destroyAllWindows()
+
+        # # https://products.aspose.com/words/python-net/conversion/jpg-to-svg/
+        # doc = aw.Document()
+        # builder = aw.DocumentBuilder(doc)
+        # shape = builder.insert_image(cf.imageStore + newFile + '.jpg')
+        # shape.get_shape_renderer().save("test.svg", aw.saving.ImageSaveOptions(aw.SaveFormat.SVG))
+
+
 
         # Read index file
         with open(cf.dataStore + 'index.json', 'r') as f:
@@ -112,7 +124,8 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         with open(cf.dataStore + 'index.json', 'w') as f:
             json.dump(data, f, indent=6)
         # Create new file for recipe
-        with open(cf.dataStore + newDir + 'recipe.json', 'w') as f:
+        # with open(cf.dataStore + newDir + 'recipe.json', 'w') as f:
+        with open(cf.dataStore + newFile + '.json', 'w') as f:
             json.dump(recipe, f, indent=6)
 
         # 5. Clean up downloaded files

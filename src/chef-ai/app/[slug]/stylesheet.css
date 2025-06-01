@@ -1,0 +1,46 @@
+.recipe-container { /* Inneholder bilde, tittel og recipe-wrapper */ 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex:5;
+    
+    padding-inline: 1%;
+    padding-block: 1%;
+
+    overflow-y: scroll;
+}
+
+
+.recipe-title {
+    text-align: center;
+}
+
+.ingredients-container {
+    
+}
+
+.image-wrapper { /* IKKE SIKKERT VI BLIR Å TRENGE DEN */
+    flex: 1;
+    display: flex;
+    position: relative;
+    background: #48b3a1;
+    
+    margin: 1%;
+    /* object-fit: cover; */
+}
+
+.recipe-wrapper { /* Inneholder left og right */
+    flex: 5;
+    display: flex;
+    flex-direction: row;
+}
+
+.left {
+    flex: 2;
+    /* background-color:chartreuse */
+}
+
+.right {
+    flex: 1;
+    background-color: azure;
+}

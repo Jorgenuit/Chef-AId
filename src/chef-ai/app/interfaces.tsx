@@ -3,7 +3,9 @@
 export interface IndexData {
   "Id": string,
   "Name": string,
-  "Path": string
+  "FilePath": string,
+  "ImagePath": string,
+  // "VideoPath": string
 }
 
 export interface RecipeData {
