@@ -5,7 +5,7 @@ export interface IndexData {
   "Name": string,
   "FilePath": string,
   "ImagePath": string,
-  // "VideoPath": string
+  "VideoPath": string
 }
 
 export interface RecipeData {

@@ -5,6 +5,9 @@ from urllib.parse import urlparse
 import os
 import json
 import uuid
+import shutil
+import random
+
 import cv2
 import aspose.words as aw
 
@@ -81,57 +84,39 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         print(recipeJsonString)
 
 
-
-
         # Save file to file system
         recipe = json.loads(recipeJsonString)
         newFile = recipe['Title'].lower().replace(' ', '_')
-        # newDir = recipe['Title'].lower().replace(' ', '_') + '/'
-        # os.makedirs(cf.dataStore + newDir, exist_ok=True)
 
         newRecipe = {
             "Id": str(uuid.uuid4()),
             "Name": recipe['Title'],
             "FilePath": cf.recipeFilePath + newFile + '.json',
-            "ImagePath": '/' + newFile + '.jpg',
+            "ImagePath": '/' + newFile + '.png',
+            "VideoPath": '/' + newFile + '.mp4'
         }
-
-        # Get first image from mp4 file
-        # https://www.geeksforgeeks.org/extract-images-from-video-in-python/
-        cam = cv2.VideoCapture(videoFile)
-        ret,frame = cam.read()
-        if ret:
-            # cv2.imwrite(cf.dataStore + newDir + 'image.jpg', frame)
-            cv2.imwrite(cf.imageStore + newFile + '.jpg', frame)
-        cam.release()
-        cv2.destroyAllWindows()
-
-        # # https://products.aspose.com/words/python-net/conversion/jpg-to-svg/
-        # doc = aw.Document()
-        # builder = aw.DocumentBuilder(doc)
-        # shape = builder.insert_image(cf.imageStore + newFile + '.jpg')
-        # shape.get_shape_renderer().save("test.svg", aw.saving.ImageSaveOptions(aw.SaveFormat.SVG))
-
 
 
         # Read index file
         with open(cf.dataStore + 'index.json', 'r') as f:
             data = json.load(f)
-            print(data)
             data.append(newRecipe)
-            print(data)
         # Update index file
         with open(cf.dataStore + 'index.json', 'w') as f:
             json.dump(data, f, indent=6)
+
         # Create new file for recipe
-        # with open(cf.dataStore + newDir + 'recipe.json', 'w') as f:
         with open(cf.dataStore + newFile + '.json', 'w') as f:
             json.dump(recipe, f, indent=6)
 
+        # Create recipe image
+        shutil.copy(cf.imageStore + 'images/generated_' + f'{random.randint(0, 4)}' + '.png', cf.imageStore + newFile + '.png')
+
+        # Create recipe video
+        os.rename(videoFile, cf.imageStore + newFile + '.mp4')
+
         # 5. Clean up downloaded files
         os.remove(cf.metadataFile)
-        os.remove(videoFile)
-
 
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -140,6 +125,29 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         self.wfile.write(textGen.choices[0].message.content.encode()) # Kanskje
         return
+    
+        # os.remove(videoFile)
+        # with open(cf.dataStore + newDir + 'recipe.json', 'w') as f:
+
+        # newDir = recipe['Title'].lower().replace(' ', '_') + '/'
+        # os.makedirs(cf.dataStore + newDir, exist_ok=True)
+
+        # # Get first image from mp4 file
+        # # https://www.geeksforgeeks.org/extract-images-from-video-in-python/
+        # cam = cv2.VideoCapture(videoFile)
+        # ret,frame = cam.read()
+        # if ret:
+        #     # cv2.imwrite(cf.dataStore + newDir + 'image.jpg', frame)
+        #     cv2.imwrite(cf.imageStore + newFile + '.jpg', frame)
+        # cam.release()
+        # cv2.destroyAllWindows()
+
+        # # https://products.aspose.com/words/python-net/conversion/jpg-to-svg/
+        # doc = aw.Document()
+        # builder = aw.DocumentBuilder(doc)
+        # shape = builder.insert_image(cf.imageStore + newFile + '.jpg')
+        # shape.get_shape_renderer().save("test.svg", aw.saving.ImageSaveOptions(aw.SaveFormat.SVG))
+
 
         # imageGen = cf.gptClient.chat.completions.create(
         #     model=cf.gptModel,
@@ -204,10 +212,7 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         #     ]
         # )
 
-        # print(response.choices[0].message.content)
-        
-
-            
+        # print(response.choices[0].message.content)   
 
         # print('Request to URL ' + url)
         

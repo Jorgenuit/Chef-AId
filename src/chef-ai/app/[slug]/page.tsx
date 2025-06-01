@@ -35,14 +35,14 @@ export default async function Page({ params, }: { params: Promise<{ slug: string
   return (
     <div className="recipe-container">
       <div className="image-wrapper">
-        {/* <Image
-          src='/test.svg'
-          // src={object.ImagePath}
+        <Image
+          // src='/test.svg'
+          src={object.ImagePath}
           fill={true}
           objectFit="cover"
           quality={100}
           alt="Image">
-          </Image> */}
+          </Image>
           {/* <img src={object.ImagePath} alt="Image" /> */}
       </div>
 
@@ -71,14 +71,14 @@ export default async function Page({ params, }: { params: Promise<{ slug: string
         </div>
 
         <div className="right">
-              
+          <video controls >
+            <source src={object.VideoPath} type="video/mp4" />
+          </video>
         </div>
       </div>
 
       <div className="video">
-        <video controls >
-          <source src={"/videos/" + object.Name + "mp4"} type="video/mp4" />
-        </video>
+        
       </div>
 
     </div>
