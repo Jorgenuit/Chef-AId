@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./ChatInput.css";
 import { useRouter } from "next/navigation";
-
+import { MoonLoader } from "react-spinners";
 
 const ChatInput = () => {
 	const backend = "http://localhost:8080"
@@ -78,8 +78,9 @@ const ChatInput = () => {
 				<button className="input-send-button" onClick={handleSend} disabled={locked}>
 					{locked ? "Sending..." : "Send"}
 				</button>
+				<MoonLoader size={25} color="silver" loading={locked} />
 			</div>
-		</div>
+		</div >
 	);
 };
 export default ChatInput;

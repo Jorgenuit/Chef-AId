@@ -15,14 +15,14 @@ const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
-				<Link href={"/"}> 
+				<Link href={"/"}>
 					<Image
-						src="/images/house-icon-2.png"
+						src="/images/house-icon-3.png"
 						priority
 						style={{ cursor: "pointer" }}
 						alt="logo"
-						width={50}
-						height={50}
+						width={25}
+						height={25}
 					/>{" "}
 					<span>Chef-AId </span>
 				</Link>
