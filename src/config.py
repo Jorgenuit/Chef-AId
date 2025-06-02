@@ -51,8 +51,9 @@ gptContext = '''
 
     The assistant provides step-by-step instructions on how to cook the meal. The instructions must be a list of clear steps that are easy to follow.
     
-    Using the provided information, estimate the calories in the specified meal per serving. The data should be formatted like this example: 
-    "Calories": 650 calories per serving
+    Using the provided information, estimate the calories in the specified meal per serving. The data should be formatted like one of these examples: 
+    "Calories": "650 calories per serving"
+    "Calories": "900 calories per serving"
 
     Estimate how many servings the recipe provides. The data should be formatted like one of these two examples: 
     "Servings": "4-6 servings",

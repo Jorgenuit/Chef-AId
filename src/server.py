@@ -3,32 +3,17 @@ import socketserver
 import socket
 from urllib.parse import urlparse
 import uuid
-import shutil
-import random
 
-from openai import AzureOpenAI
 import os
 import requests
-from PIL import Image
 import json
 
-import cv2
-# import aspose.words as aw
-
-import whisper
 import pyktok as pyk
-
-import numpy as np
 import pandas as pd
-
-import base64
-# from config import gptModel, metadataFile, whisperModel, gptClient
 import config as cf
 
-# whisperModel = whisper.load_model('base')
-# exampleTiktokURL = 'https://www.tiktok.com/@shezcooks/video/7424055700164316449?q=food&t=1748256368770'
-exampleTiktokURL = 'https://www.tiktok.com/@sivanskitchen/video/7453908585282571550'
-# gptModel = 'gpt-4o'
+# exampleTiktokURL = 'https://www.tiktok.com/@shezcooks/video/7424055700164316449?q=food&t=1748256368770' # DEBUG
+# exampleTiktokURL = 'https://www.tiktok.com/@sivanskitchen/video/7453908585282571550' # DEBUG
 
 
 class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -66,7 +51,7 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         # tiktokURL = exampleTiktokURL  # DEBUG
 
         # 1. Read body with url - VENT
-        # 2. Check validity of url? Maybe not. Hiv på en try except
+        # 2. Check validity of url? Hiv på en try except
         
         # 3. Download video file (mp4)
         videoFile = pyk.save_tiktok(tiktokURL, True, cf.metadataFile, return_fns=True)['video_fn']
@@ -134,7 +119,6 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
         with open(cf.imageStore + newFile + '.png', "wb") as image_file:
             image_file.write(generated_image)
 
-        # shutil.copy(cf.imageStore + 'images/generated_' + f'{random.randint(0, 5)}' + '.png', cf.imageStore + newFile + '.png')
 
         # Create recipe video
         os.rename(videoFile, cf.imageStore + newFile + '.mp4')
@@ -149,96 +133,6 @@ class LogRequestHandler(http.server.SimpleHTTPRequestHandler):
 
         self.wfile.write(textGen.choices[0].message.content.encode()) # Kanskje
         return
-    
-        # os.remove(videoFile)
-        # with open(cf.dataStore + newDir + 'recipe.json', 'w') as f:
-
-        # newDir = recipe['Title'].lower().replace(' ', '_') + '/'
-        # os.makedirs(cf.dataStore + newDir, exist_ok=True)
-
-        # # Get first image from mp4 file
-        # # https://www.geeksforgeeks.org/extract-images-from-video-in-python/
-        # cam = cv2.VideoCapture(videoFile)
-        # ret,frame = cam.read()
-        # if ret:
-        #     # cv2.imwrite(cf.dataStore + newDir + 'image.jpg', frame)
-        #     cv2.imwrite(cf.imageStore + newFile + '.jpg', frame)
-        # cam.release()
-        # cv2.destroyAllWindows()
-
-        # # https://products.aspose.com/words/python-net/conversion/jpg-to-svg/
-        # doc = aw.Document()
-        # builder = aw.DocumentBuilder(doc)
-        # shape = builder.insert_image(cf.imageStore + newFile + '.jpg')
-        # shape.get_shape_renderer().save("test.svg", aw.saving.ImageSaveOptions(aw.SaveFormat.SVG))
-
-
-        # imageGen = cf.gptClient.chat.completions.create(
-        #     model=cf.gptModel,
-        #     messages=[
-        #     {
-        #         "role": "system", 
-        #         "content": "You are an expert image creator. Generate high-quality images based on descriptions."
-        #     },
-        #     {
-        #         "role": "user", 
-        #         "content": "Create an image of a cripsy rice salad"
-        #     }
-        #     ],
-        #     max_tokens=1000
-        # )
-
-        # print(imageGen.choices[0].message)
-
-        # imageGen = cf.gptClient.responses.create(
-        #     model=cf.gptModel,
-        #     input='Crispy rice salad',
-        #     tools=[{'type': 'image_generation'}],
-        # )
-
-        # image_data = [
-        #     output.result
-        #     for output in imageGen.output
-        #     if output.type == 'image_generation_call'
-        # ]
-        # if image_data:
-        #     image_base64 = image_data[0]
-        #     with open("otter.png", "wb") as f:
-        #         f.write(base64.b64decode(image_base64))
-
-        # Save video and metadata
-        # savedFiles = pyk.save_tiktok(tiktokURL, True, metadataFile, return_fns=True)
-        # Get video file name
-        # videoFile = savedFiles['video_fn'] 
-        # Get description from metadata
-        # df = pd.read_csv(metadataFile)
-        # description = df.loc[0, 'video_description']
-        # Transcribe video file
-        # transcription = whisperModel.transcribe(videoFile, fp16=False)
-        # transcription = transcription['text']
-        # Transcribed video
-        # print(description)
-        # print(transcription)
-
-        # print('Setting up GPT client')
-        # client = AzureOpenAI(
-        #     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-        #     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-        #     api_version="2025-01-01-preview"
-        # )
-
-        # print('Promting ChatGPT')
-        # response = client.chat.completions.create(
-        #     model=gptModel,
-        #     messages=[
-        #         {'role': 'system', 'content': 'Assistant is trained to create a recipe from the provided input text. The assistant takes two textual sources as input: DESCRIPTION and TRANSCRIPTION. The outputted recipe contains a list of the neccesary ingredients and a step-by-step instruction on how to cook the meal.'},
-        #         {'role': 'user', 'content': 'DESCRIPTION: ' + description + '\nTRANSCRIPTION: ' + transcription}
-        #     ]
-        # )
-
-        # print(response.choices[0].message.content)   
-
-        # print('Request to URL ' + url)
         
 
 
