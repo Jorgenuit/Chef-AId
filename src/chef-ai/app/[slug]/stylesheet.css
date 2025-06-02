@@ -125,10 +125,12 @@ b {
 .tip-div {
     flex: 3;
     margin-inline-start: 3%;
+    min-width: 67%;
 }
 
 .other-tip-div {
     flex: 2;
+    /* margin-inline-start: 2%; */
 }
 
 .tip-list {

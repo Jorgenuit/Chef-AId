@@ -15,7 +15,7 @@ const Sidebar: React.FC<SidebarProps> = ({ items = [] }) => {
 	return (
 		<div className="sidebar">
 			<div className="sidebar-header">
-				<Link href={"/"}>
+				<Link href={"/"} className="sidebar-link">
 					<Image
 						src="/images/mascot-icon.png"
 						priority

@@ -26,3 +26,8 @@
 .sidebar-item:hover {
 	background-color: #343541; /*lighter gray when hovering*/
 }
+
+.sidebar-link {
+	display: flex;
+	align-items: center;
+}
